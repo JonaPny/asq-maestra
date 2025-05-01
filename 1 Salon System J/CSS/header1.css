@@ -1,0 +1,16 @@
+.custom-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    color: #ff3e9a;
+}
+
+.custom-brand img {
+    width: 40px;
+    height: 40px;
+}
+
+.custom-brand .brand-text {
+    font-size: 80px;
+    font-weight: bold;
+    color: #ff3e9a;
+}
