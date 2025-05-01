@@ -1,0 +1,44 @@
+.nav-link {
+    position: relative;
+    color: #000 !important; /* default color, overrides Bootstrap */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    display: block;
+    background: #ff3e9a;
+    transition: width 0.3s;
+    bottom: 0;
+    left: 0;
+  }
+
+  .nav-link:hover {
+    color: #ff3e9a !important; /* override Bootstrap dark */
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .signup-btn {
+    background-color: transparent;
+    color: #ff3e9a;
+    border: 1px solid #ff3e9a;  /* Slightly thicker border for better definition */
+    border-radius: 5px;         /* Rounded corners */
+    padding: 10px 20px;          /* Adjust padding for a nicer button size */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    text-align: center;
+    font-size: 1rem;             /* Adjust font size */
+    text-decoration: none;
+  }
+
+  .signup-btn:hover {
+    background-color: #ff3e9a;   /* Full pink background */
+    color: white;                 /* White text */
+    
+  }

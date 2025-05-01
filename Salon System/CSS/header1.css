@@ -1,0 +1,43 @@
+
+.custom-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    color: #ff3e9a;
+}
+
+.custom-brand img {
+    width: 40px;
+    height: 40px;
+}
+
+.custom-brand .brand-text {
+    font-size: 80px;
+    font-weight: bold;
+    color: #ff3e9a;
+}
+
+/* Ensure the navigation is small across sections */
+nav-item a {
+    font-size: 16px; /* Adjust size to your preference */
+    padding: 10px 20px; /* Adjust padding to make it smaller */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* If you have a sticky/fixed nav, prevent it from growing */
+nav.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Optional: Set a specific size for when you're in different sections */
+section {
+    margin-top: 50px; /* Give space for the nav */
+}
+
+/* For the active state, if you want the nav to not change size when you switch sections */
+nav.active {
+    font-size: 16px; /* Consistent size */
+}
