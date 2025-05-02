@@ -1,0 +1,83 @@
+/* Custom Colors */
+:root {
+    --pink: #ff4081;
+    --pink-hover: #e91e63;
+  }
+  
+  /* Text Colors */
+  .text-pink {
+    color: var(--pink) !important;
+  }
+  
+  /* Background Colors */
+  .bg-pink {
+    background-color: var(--pink) !important;
+  }
+  
+  /* Buttons */
+  .btn-pink {
+    background-color: var(--pink);
+    color: white;
+  }
+  
+  .btn-pink:hover {
+    background-color: var(--pink-hover);
+    color: white;
+  }
+  
+  /* Profile Image */
+  .profile-img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Carousel Controls */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carousel-control-prev i,
+  .carousel-control-next i {
+    color: #212529;
+  }
+  
+  /* Services Carousel */
+  .services-carousel {
+    overflow-x: hidden;
+    padding: 0 40px;
+  }
+  
+  .service-card {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  
+  .service-card img {
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  /* Hide scrollbar for the carousel */
+  .overflow-auto::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .overflow-auto {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .service-card {
+      min-width: 240px;
+      max-width: 240px;
+    }
+  }
