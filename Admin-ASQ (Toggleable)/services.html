@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Manager - Salon Admin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="salon.css">
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="sidebar-header text-center py-3">
+                    <div class="admin-icon">
+                        <i class="bi bi-person-circle fs-1 text-white"></i>
+                    </div>
+                    <h5 class="text-white mt-2">Admin</h5>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <h6 class="menu-header">Main Menu</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard.html">
+                                CUSTOMER APPOINTMENT CALENDAR
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="appointment.html">
+                                CUSTOMER BOOKINGS
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="queue.html">
+                                QUEUE MANAGER
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="services.html">
+                                SERVICES MANAGER
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="logout-container">
+                        <a href="index.html" class="btn btn-logout">LOG OUT</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <div class="admin-icon me-2">
+            <i class="bi bi-person-circle fs-3"></i>
+        </div>
+        <span class="fw-bold">Admin</span>
+    </div>
+    <div>
+        <a href="#" class="salon-profile-link">
+            <img src="logo.png" alt="Salon Profile" height="70px" width="70" class="rounded-circle">
+        </a>
+    </div>
+</div>
+                
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Services Manager</h2>
+                        <div>
+                            <button class="btn btn-sm btn-outline-pink" id="add-service-btn">
+                                <i class="bi bi-plus-circle me-1"></i> Add New Service
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success d-none" id="service-message"></div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-pink text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Service Categories</h5>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-light active category-filter" data-category="all">All</button>
+                                        <button type="button" class="btn btn-sm btn-outline-light category-filter" data-category="hair">Hair</button>
+                                        <button type="button" class="btn btn-sm btn-outline-light category-filter" data-category="makeup">Makeup</button>
+                                        <button type="button" class="btn btn-sm btn-outline-light category-filter" data-category="spa">Spa</button>
+                                        <button type="button" class="btn btn-sm btn-outline-light category-filter" data-category="nails">Nails</button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Service Name</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Duration</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="services-table">
+                                                <!-- Services will be loaded by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Modal -->
+    <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-pink text-white">
+                    <h5 class="modal-title" id="serviceModalTitle">Add New Service</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="serviceForm">
+                        <input type="hidden" id="serviceId">
+                        <div class="mb-3">
+                            <label for="serviceName" class="form-label">Service Name</label>
+                            <input type="text" class="form-control" id="serviceName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="serviceDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="serviceDescription" rows="3"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="servicePrice" class="form-label">Price (PHP)</label>
+                                <input type="number" class="form-control" id="servicePrice" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serviceDuration" class="form-label">Duration (minutes)</label>
+                                <input type="number" class="form-control" id="serviceDuration" min="15" step="15" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="serviceCategory" class="form-label">Category</label>
+                                <select class="form-select" id="serviceCategory" required>
+                                    <option value="hair">Hair</option>
+                                    <option value="makeup">Makeup</option>
+                                    <option value="spa">Spa</option>
+                                    <option value="nails">Nails</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serviceStatus" class="form-label">Status</label>
+                                <select class="form-select" id="serviceStatus" required>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-pink" id="saveService">Save Service</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="salon.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample services data
+            let servicesData = [
+                {
+                    id: 1,
+                    name: 'Hair Cut & Style',
+                    description: 'Professional haircut and styling by our expert stylists',
+                    price: 350.00,
+                    duration: 60,
+                    category: 'hair',
+                    status: 1
+                },
+                {
+                    id: 2,
+                    name: 'Hair Color',
+                    description: 'Full hair coloring service with premium products',
+                    price: 1500.00,
+                    duration: 120,
+                    category: 'hair',
+                    status: 1
+                },
+                {
+                    id: 3,
+                    name: 'Manicure & Pedicure',
+                    description: 'Complete nail care for hands and feet',
+                    price: 500.00,
+                    duration: 90,
+                    category: 'nails',
+                    status: 1
+                },
+                {
+                    id: 4,
+                    name: 'Facial Treatment',
+                    description: 'Rejuvenating facial treatment for glowing skin',
+                    price: 800.00,
+                    duration: 60,
+                    category: 'spa',
+                    status: 1
+                },
+                {
+                    id: 5,
+                    name: 'Hot Oil Treatment',
+                    description: 'Deep conditioning treatment for healthy hair',
+                    price: 600.00,
+                    duration: 45,
+                    category: 'hair',
+                    status: 1
+                },
+                {
+                    id: 6,
+                    name: 'Makeup Application',
+                    description: 'Professional makeup application for any occasion',
+                    price: 1200.00,
+                    duration: 60,
+                    category: 'makeup',
+                    status: 1
+                },
+                {
+                    id: 7,
+                    name: 'Bridal Package',
+                    description: 'Complete hair and makeup package for brides',
+                    price: 5000.00,
+                    duration: 180,
+                    category: 'makeup',
+                    status: 0
+                }
+            ];
+            
+            // Load services
+            function loadServices(category = 'all') {
+                const servicesTable = document.getElementById('services-table');
+                servicesTable.innerHTML = '';
+                
+                const filteredServices = category === 'all' 
+                    ? servicesData 
+                    : servicesData.filter(service => service.category === category);
+                
+                filteredServices.forEach(service => {
+                    const row = document.createElement('tr');
+                    
+                    // Format price
+                    const formattedPrice = new Intl.NumberFormat('en-PH', {
+                        style: 'currency',
+                        currency: 'PHP'
+                    }).format(service.price);
+                    
+                    // Create status badge
+                    const statusBadge = service.status === 1 
+                        ? '<span class="badge bg-success">Active</span>' 
+                        : '<span class="badge bg-secondary">Inactive</span>';
+                    
+                    row.innerHTML = `
+                        <td>#${service.id}</td>
+                        <td>${service.name}</td>
+                        <td>${service.category.charAt(0).toUpperCase() + service.category.slice(1)}</td>
+                        <td>${formattedPrice}</td>
+                        <td>${service.duration} mins</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1 edit-service" data-service-id="${service.id}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-service" data-service-id="${service.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    servicesTable.appendChild(row);
+                });
+                
+                // Add event listeners
+                document.querySelectorAll('.edit-service').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const serviceId = this.getAttribute('data-service-id');
+                        openServiceModal(serviceId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-service').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const serviceId = this.getAttribute('data-service-id');
+                        deleteService(serviceId);
+                    });
+                });
+            }
+            
+            // Initial load
+            loadServices();
+            
+            // Category filter
+            document.querySelectorAll('.category-filter').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.category-filter').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Load services for selected category
+                    const category = this.getAttribute('data-category');
+                    loadServices(category);
+                });
+            });
+            
+            // Service modal
+            const serviceModal = new bootstrap.Modal(document.getElementById('serviceModal'));
+            
+            // Add service button
+            document.getElementById('add-service-btn').addEventListener('click', function() {
+                openServiceModal();
+            });
+            
+            function openServiceModal(serviceId = null) {
+                // Reset form
+                document.getElementById('serviceForm').reset();
+                
+                // Set modal title
+                document.getElementById('serviceModalTitle').textContent = serviceId ? 'Edit Service' : 'Add New Service';
+                
+                if (serviceId) {
+                    // Find service
+                    const service = servicesData.find(s => s.id == serviceId);
+                    if (!service) return;
+                    
+                    // Populate form
+                    document.getElementById('serviceId').value = service.id;
+                    document.getElementById('serviceName').value = service.name;
+                    document.getElementById('serviceDescription').value = service.description;
+                    document.getElementById('servicePrice').value = service.price;
+                    document.getElementById('serviceDuration').value = service.duration;
+                    document.getElementById('serviceCategory').value = service.category;
+                    document.getElementById('serviceStatus').value = service.status;
+                } else {
+                    // Clear service ID
+                    document.getElementById('serviceId').value = '';
+                }
+                
+                // Show modal
+                serviceModal.show();
+            }
+            
+            // Save service
+            document.getElementById('saveService').addEventListener('click', function() {
+                // Get form values
+                const serviceId = document.getElementById('serviceId').value;
+                const serviceName = document.getElementById('serviceName').value;
+                const serviceDescription = document.getElementById('serviceDescription').value;
+                const servicePrice = parseFloat(document.getElementById('servicePrice').value);
+                const serviceDuration = parseInt(document.getElementById('serviceDuration').value);
+                const serviceCategory = document.getElementById('serviceCategory').value;
+                const serviceStatus = parseInt(document.getElementById('serviceStatus').value);
+                
+                // Validate form
+                if (!serviceName || isNaN(servicePrice) || isNaN(serviceDuration)) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                if (serviceId) {
+                    // Update existing service
+                    const serviceIndex = servicesData.findIndex(s => s.id == serviceId);
+                    if (serviceIndex === -1) return;
+                    
+                    servicesData[serviceIndex] = {
+                        id: parseInt(serviceId),
+                        name: serviceName,
+                        description: serviceDescription,
+                        price: servicePrice,
+                        duration: serviceDuration,
+                        category: serviceCategory,
+                        status: serviceStatus
+                    };
+                    
+                    // Show success message
+                    showServiceMessage(`Service "${serviceName}" updated successfully`);
+                } else {
+                    // Add new service
+                    const newService = {
+                        id: servicesData.length > 0 ? Math.max(...servicesData.map(s => s.id)) + 1 : 1,
+                        name: serviceName,
+                        description: serviceDescription,
+                        price: servicePrice,
+                        duration: serviceDuration,
+                        category: serviceCategory,
+                        status: serviceStatus
+                    };
+                    
+                    servicesData.push(newService);
+                    
+                    // Show success message
+                    showServiceMessage(`Service "${serviceName}" added successfully`);
+                }
+                
+                // Close modal
+                serviceModal.hide();
+                
+                // Reload services
+                const activeCategory = document.querySelector('.category-filter.active').getAttribute('data-category');
+                loadServices(activeCategory);
+            });
+            
+            // Delete service
+            function deleteService(serviceId) {
+                // Find service
+                const service = servicesData.find(s => s.id == serviceId);
+                if (!service) return;
+                
+                // Confirm deletion
+                if (!confirm(`Are you sure you want to delete "${service.name}"?`)) {
+                    return;
+                }
+                
+                // Remove service
+                servicesData = servicesData.filter(s => s.id != serviceId);
+                
+                // Reload services
+                const activeCategory = document.querySelector('.category-filter.active').getAttribute('data-category');
+                loadServices(activeCategory);
+                
+                // Show success message
+                showServiceMessage(`Service "${service.name}" deleted successfully`);
+            }
+            
+            // Show service message
+            function showServiceMessage(message) {
+                const serviceMessage = document.getElementById('service-message');
+                serviceMessage.textContent = message;
+                serviceMessage.classList.remove('d-none');
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    serviceMessage.classList.add('d-none');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

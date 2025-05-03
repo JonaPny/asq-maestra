@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Salon Admin</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="salon.css">
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="sidebar-header text-center py-3">
+                    <div class="admin-icon">
+                        <i class="bi bi-person-circle fs-1 text-white"></i>
+                    </div>
+                    <h5 class="text-white mt-2">Admin</h5>
+                </div>
+            
+                <div class="sidebar-menu">
+                    <h6 class="menu-header">Main Menu</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard.html">
+                                CUSTOMER APPOINTMENT CALENDAR
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="appointment.html">
+                                CUSTOMER BOOKINGS
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="queue.html">
+                                QUEUE MANAGER
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="services.html">
+                                SERVICES MANAGER
+                            </a>
+                        </li>
+                    </ul>
+            
+                    
+                    <div class="logout-container">
+                        <a href="index.html" class="btn btn-logout">LOG OUT</a>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <div class="admin-icon me-2">
+            <i class="bi bi-person-circle fs-3"></i>
+        </div>
+        <span class="fw-bold">Admin</span>
+    </div>
+    <div>
+        <a href="#" class="salon-profile-link">
+            <img src="logo.png" alt="Salon Profile" height="70px" width="70" class="rounded-circle">
+        </a>
+    </div>
+</div>
+                
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="text-uppercase" id="current-month">FEBRUARY</h2>
+                        <div class="d-flex align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-2" id="prev-month">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-2" id="today-btn">Today</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-3" id="next-month">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                            <div class="form-check form-switch me-3">
+                                <input class="form-check-input" type="checkbox" id="edit-mode">
+                                <label class="form-check-label" for="edit-mode">Edit Mode</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-legend mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="legend-item me-3">
+                                <span class="legend-color home-service"></span>
+                                <span>HOME SERVICE</span>
+                            </div>
+                            <div class="legend-item me-3">
+                                <span class="legend-color salon-service"></span>
+                                <span>SALON SERVICE</span>
+                            </div>
+                            <div class="legend-item me-3">
+                                <span class="legend-color full-sched"></span>
+                                <span>FULL SCHED</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color blocked"></span>
+                                <span>BLOCKED</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <table class="table table-bordered calendar-table">
+                            <thead>
+                                <tr>
+                                    <th>Sun</th>
+                                    <th>Mon</th>
+                                    <th>Tue</th>
+                                    <th>Wed</th>
+                                    <th>Thu</th>
+                                    <th>Fri</th>
+                                    <th>Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendar-body">
+                                <!-- Calendar will be generated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Day Edit Modal -->
+    <div class="modal fade" id="dayEditModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-pink text-white">
+                    <h5 class="modal-title">Edit Day Status</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="dayEditForm">
+                        <input type="hidden" id="selected-date">
+                        <div class="mb-3">
+                            <label class="form-label">Day Status</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="dayStatus" id="statusNormal" value="normal" checked>
+                                <label class="form-check-label" for="statusNormal">
+                                    Normal (Available)
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="dayStatus" id="statusFull" value="full">
+                                <label class="form-check-label" for="statusFull">
+                                    Full Schedule
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="dayStatus" id="statusBlocked" value="blocked">
+                                <label class="form-check-label" for="statusBlocked">
+                                    Blocked (Unavailable)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dayNotes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="dayNotes" rows="3" placeholder="Add notes about this day (optional)"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-pink" id="saveDayStatus">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="salon.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calendar variables
+            let currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            // Sample data for appointments
+            let appointments = {
+                '2023-02-04': { count: 3, type: 'salon-service' },
+                '2023-02-05': { count: 5, type: 'full-sched' },
+                '2023-02-07': { count: 1, type: 'salon-service' },
+                '2023-02-12': { count: 2, type: 'home-service' },
+                '2023-02-15': { count: 4, type: 'salon-service' },
+                '2023-02-20': { count: 0, type: 'blocked' }
+            };
+            
+            // Generate calendar
+            function generateCalendar(month, year) {
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startingDay = firstDay.getDay();
+                
+                // Update month display
+                const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+                document.getElementById('current-month').textContent = monthNames[month] + " " + year;
+                
+                let calendarBody = document.getElementById('calendar-body');
+                calendarBody.innerHTML = '';
+                
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    // Create table row
+                    let row = document.createElement('tr');
+                    
+                    // Create cells
+                    for (let j = 0; j < 7; j++) {
+                        if (i === 0 && j < startingDay) {
+                            // Empty cells before the first day
+                            let cell = document.createElement('td');
+                            row.appendChild(cell);
+                        } else if (date > daysInMonth) {
+                            // Empty cells after the last day
+                            let cell = document.createElement('td');
+                            row.appendChild(cell);
+                        } else {
+                            // Create date cell
+                            let cell = document.createElement('td');
+                            let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                            
+                            // Check if this date has appointments
+                            if (appointments[dateStr]) {
+                                cell.className = appointments[dateStr].type;
+                            }
+                            
+                            // Create date display
+                            let dateDiv = document.createElement('div');
+                            dateDiv.className = 'calendar-date';
+                            dateDiv.textContent = date;
+                            cell.appendChild(dateDiv);
+                            
+                            // Add appointment count if any
+                            if (appointments[dateStr] && appointments[dateStr].count > 0) {
+                                let countSpan = document.createElement('span');
+                                countSpan.className = 'appointment-count';
+                                countSpan.textContent = appointments[dateStr].count;
+                                cell.appendChild(countSpan);
+                            }
+                            
+                            // Add data attribute for date
+                            cell.setAttribute('data-date', dateStr);
+                            
+                            // Add click event for editing
+                            cell.addEventListener('click', function() {
+                                if (document.getElementById('edit-mode').checked) {
+                                    openDayEditModal(dateStr);
+                                } else {
+                                    viewDayAppointments(dateStr);
+                                }
+                            });
+                            
+                            row.appendChild(cell);
+                            date++;
+                        }
+                    }
+                    
+                    calendarBody.appendChild(row);
+                    
+                    // Stop if we've reached the end of the month
+                    if (date > daysInMonth) {
+                        break;
+                    }
+                }
+            }
+            
+            // Initialize calendar
+            generateCalendar(currentMonth, currentYear);
+            
+            // Previous month button
+            document.getElementById('prev-month').addEventListener('click', function(e) {
+                e.preventDefault();
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            // Next month button
+            document.getElementById('next-month').addEventListener('click', function(e) {
+                e.preventDefault();
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            // Today button
+            document.getElementById('today-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const today = new Date();
+                currentMonth = today.getMonth();
+                currentYear = today.getFullYear();
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            // Day edit modal
+            const dayEditModal = new bootstrap.Modal(document.getElementById('dayEditModal'));
+            
+            function openDayEditModal(dateStr) {
+                document.getElementById('selected-date').value = dateStr;
+                
+                // Set current status
+                let status = 'normal';
+                if (appointments[dateStr]) {
+                    if (appointments[dateStr].type === 'full-sched') {
+                        status = 'full';
+                    } else if (appointments[dateStr].type === 'blocked') {
+                        status = 'blocked';
+                    }
+                }
+                
+                document.querySelector(`input[name="dayStatus"][value="${status}"]`).checked = true;
+                
+                // Show modal
+                dayEditModal.show();
+            }
+            
+            // Save day status
+            document.getElementById('saveDayStatus').addEventListener('click', function() {
+                const dateStr = document.getElementById('selected-date').value;
+                const status = document.querySelector('input[name="dayStatus"]:checked').value;
+                const notes = document.getElementById('dayNotes').value;
+                
+                // Update appointments data
+                if (status === 'normal') {
+                    if (appointments[dateStr]) {
+                        delete appointments[dateStr];
+                    }
+                } else if (status === 'full') {
+                    appointments[dateStr] = { count: 5, type: 'full-sched', notes: notes };
+                } else if (status === 'blocked') {
+                    appointments[dateStr] = { count: 0, type: 'blocked', notes: notes };
+                }
+                
+                // Regenerate calendar
+                generateCalendar(currentMonth, currentYear);
+                
+                // Close modal
+                dayEditModal.hide();
+                
+                // Show success message
+                alert(`Day status updated for ${dateStr}`);
+            });
+            
+            // View day appointments
+            function viewDayAppointments(dateStr) {
+                if (appointments[dateStr] && appointments[dateStr].type !== 'blocked') {
+                    alert(`View appointments for ${dateStr}`);
+                    // In a real app, this would navigate to a day view or show a modal with appointments
+                }
+            }
+        });
+    </script>
+</body>
+</html>

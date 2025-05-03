@@ -1,0 +1,276 @@
+/* Custom Colors */
+:root {
+  --pink: #ff1a8c;
+  --pink-light: #ffcce6;
+  --pink-dark: #cc0066;
+  --black: #212529;
+  --white: #ffffff;
+}
+
+/* General Styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Text Colors */
+.text-pink {
+  color: var(--pink) !important;
+}
+
+/* Background Colors */
+.bg-pink {
+  background-color: var(--pink) !important;
+}
+
+/* Buttons */
+.btn-pink {
+  background-color: var(--pink);
+  color: white;
+}
+
+.btn-pink:hover {
+  background-color: var(--pink-dark);
+  color: white;
+}
+
+.btn-outline-pink {
+  color: var(--pink);
+  border-color: var(--pink);
+}
+
+.btn-outline-pink:hover {
+  background-color: var(--pink);
+  color: white;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--white);
+  min-height: 100vh;
+  border-right: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.sidebar-header {
+  background-color: var(--pink);
+  padding: 15px 0;
+}
+
+/* Mobile sidebar behavior */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Start off-screen */
+    width: 280px;
+    height: 100%;
+    z-index: 1050;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar.show {
+    left: 0; /* Move on-screen when .show class is added */
+  }
+
+  /* Add overlay when sidebar is shown */
+  body.sidebar-open::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+
+  /* Fix sidebar menu structure for mobile */
+  .sidebar-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.admin-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: var(--pink);
+}
+
+/* Make admin icon only clickable in mobile view */
+@media (max-width: 768px) {
+  .admin-icon {
+    cursor: pointer;
+  }
+}
+
+.sidebar .admin-icon {
+  background-color: var(--white);
+}
+
+/* Add hamburger icon for mobile */
+.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+.menu-header {
+  color: var(--pink);
+  padding: 15px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.sidebar-menu .nav-link {
+  color: var(--black);
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.sidebar-menu .nav-link:hover,
+.sidebar-menu .nav-link.active {
+  background-color: var(--pink-light);
+  color: var(--pink);
+}
+
+/* Fix logout container positioning */
+.logout-container {
+  padding: 15px;
+  width: 100%;
+  position: relative; /* Change from absolute to relative */
+  margin-top: auto; /* Push to bottom but don't overlap */
+}
+
+.btn-logout {
+  color: var(--pink);
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  font-weight: 500;
+}
+
+.btn-logout:hover {
+  color: var(--pink-dark);
+}
+
+/* Main Content */
+.main-content {
+  min-height: 100vh;
+  background-color: var(--white);
+}
+
+/* Calendar */
+.calendar-legend {
+  display: flex;
+  align-items: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.home-service {
+  background-color: #ff9933;
+}
+
+.salon-service {
+  background-color: #009933;
+}
+
+.full-sched {
+  background-color: #ff3333;
+}
+
+.blocked {
+  background-color: #999999;
+}
+
+.calendar-table th {
+  text-align: center;
+  font-weight: 500;
+}
+
+.calendar-table td {
+  height: 100px;
+  position: relative;
+  vertical-align: top;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.calendar-table td:hover {
+  background-color: #f8f9fa;
+}
+
+.calendar-date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.appointment-count {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-weight: bold;
+}
+
+/* Customer Details */
+.customer-image-container {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.customer-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 3px solid var(--pink);
+}
+
+/* Queue Manager */
+.current-serving {
+  border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendar-table td {
+    height: 60px;
+  }
+}
